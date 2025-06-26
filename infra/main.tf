@@ -12,30 +12,39 @@ provider "aws" {
     shared_credentials_files = [ var.credential_file ]
 }
 
+# VPC
 module "vpc" {
     source = "./modules/vpc"
     vpc_name = "k8s-vpc"
 }
 
-resource "aws_instance" "nodes" {
+# EC2 Instances for Kubernetes Nodes
+module "ec2" {
     depends_on = [ module.vpc ]
-    ami = "ami-0e2c8caa4b6378d8c"
-    instance_type = "t2.medium"
+    source = "./modules/ec2"
     subnet_id = module.vpc.subnet_ids[0]
-    vpc_security_group_ids = [ module.vpc.public_sg_id ]
-    key_name = "linux-kp"
-    root_block_device {
-      volume_size = 16
-    }
-    count = 3
-    tags = {
-        Name = "node-${count.index + 1}"
-    }
+    security_group_ids = [ module.vpc.public_sg_id ]
+    node_count = 3
 }
 
+# NLB for multi-master cluster
+module "nlb" {
+    depends_on = [ module.ec2 ]
+    source = "./modules/nlb"
+    nlb_name = "k8s-nlb"
+    nlb_security_groups = [ module.vpc.public_sg_id ]
+    nlb_subnets = module.vpc.subnet_ids
+    vpc_id = module.vpc.vpc_id
+    k8s_api_instance_ids = module.ec2.instance_ids
+}
 
-# Output
-output "nodes_public_ip" {
-  description = "Public IP addresses of the Kubernetes nodes"
-  value = aws_instance.nodes[*].public_ip
+# Outputs
+output "nlb_dns_name" {
+    description = "DNS name of the Kubernetes NLB"
+    value = module.nlb.nlb_dns_name
+}
+
+output "k8s_node_public_ips" {
+    description = "Public IP addresses of the Kubernetes nodes"
+    value = module.ec2.instance_public_ips
 }
