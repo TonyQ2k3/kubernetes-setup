@@ -7,7 +7,26 @@ set -euxo pipefail
 
 # Disable swap to ensure Kubernetes works correctly
 sudo swapoff -a
-sudo sed -i '/ swap / s/^/#/' /etc/fstab
+(crontab -l 2>/dev/null; echo "@reboot /sbin/swapoff -a") | crontab - || true
+
+# Load the modules at bootup
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+EOF
+
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
+# Sysctl params required by setup, params persist across reboots
+cat << EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward                 = 1
+EOF
+
+# Apply sysctl params without reboot
+sudo sysctl --system
 
 
 # Install common packages
@@ -59,3 +78,14 @@ sudo apt-mark hold kubelet kubeadm kubectl
 sudo systemctl enable --now kubelet
 
 echo "Kubernetes packages installed successfully."
+
+
+# Retrieve the local IP address and set it for kubelet
+local_ip="$(ip --json addr show enX0 | jq -r '.[0].addr_info[] | select(.family == "inet") | .local')"
+
+# Write the local IP address to the kubelet default configuration file
+sudo chmod 777 /etc/default/kubelet
+sudo cat > /etc/default/kubelet << EOF
+KUBELET_EXTRA_ARGS=--node-ip=$local_ip
+EOF
+sudo chmod 644 /etc/default/kubelet
