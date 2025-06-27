@@ -89,3 +89,7 @@ sudo cat > /etc/default/kubelet << EOF
 KUBELET_EXTRA_ARGS=--node-ip=$local_ip
 EOF
 sudo chmod 644 /etc/default/kubelet
+
+# Enable CRI plugin in Containerd
+sudo sed -i '/disabled_plugins = \["cri"\]/d' "/etc/containerd/config.toml"
+sudo systemctl restart containerd
