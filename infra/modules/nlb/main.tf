@@ -8,7 +8,7 @@ resource "aws_lb_target_group" "k8s_nlb_target_group" {
 
     health_check {
       protocol = "TCP"
-      port = 6443
+      port = 22
     }
 
     tags = {
