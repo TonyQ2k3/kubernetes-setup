@@ -1,5 +1,10 @@
+## References
+[CRI-O installation](https://github.com/cri-o/packaging/blob/main/README.md)
+
+[Kubeadm installation](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
+
 ## Provision infrastructure
-```bash
+```bashe 
 terraform init
 terraform plan
 terraform apply --auto-approve
@@ -13,12 +18,23 @@ chmod +x common.sh
 ./common.sh
 ```
 
-## Remove CRI disable option
-1. Edit `/etc/containerd/config.toml` and comment out `disabled_plugins = ["cri"]`
-2. Restart containerD with `sudo systemctl restart containerd`
-
-
-## Initialize the cluster
+## Initialize the cluster (multi-masters)
+1. SSH into the first node
+2. Execute the init script
+```bash
+chmod +x multi-master-init.sh
+./multi-master-init.sh
 ```
+3. Enter DNS name or IP of the Network Load Balancer created.
+4. If calico network step fails, simply re-run the `kubectl apply` command after a while.
 
+
+## Join the cluster
+On the first node, run `kubeadm token create --print-join-command` to get the join command and run it on the other nodes.
+
+## Reset the cluster
+```bash
+sudo kubeadm reset
+sudo systemctl restart kubelet
+sudo rm -rf ~/.kube
 ```
