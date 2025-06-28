@@ -13,7 +13,7 @@ read -r MASTER_PUBLIC_IP
 sudo kubeadm config images pull
 
 # Initialize the cluster
-sudo kubeadm init --control-plane-endpoint="$MASTER_PUBLIC_IP" --apiserver-cert-extra-sans="$MASTER_PUBLIC_IP" --pod-network-cidr="$POD_CIDR" --upload-certs --ignore-preflight-errors Swap
+sudo kubeadm init --control-plane-endpoint="$MASTER_PUBLIC_IP" --pod-network-cidr="$POD_CIDR" --upload-certs --ignore-preflight-errors
 
 # Configure kubeconfig
 mkdir -p "$HOME"/.kube
