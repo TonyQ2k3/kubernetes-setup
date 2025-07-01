@@ -26,15 +26,15 @@ chmod +x multi-master-init.sh
 ./multi-master-init.sh
 ```
 3. Enter DNS name or IP of the Network Load Balancer created.
-4. If calico network step fails, simply re-run the `kubectl apply` command after a while.
+4. If calico network step fails, simply re-run the `kubectl apply` command after a moment.
 
 
 ## Join the cluster
-On the first node, run `kubeadm token create --print-join-command` to get the join command and run it on the other nodes.
+After running the `multi-master-init.sh`, the console should print out the join command, copy and run it on the other nodes.
+If you missed or lost it, on the first node, run `kubeadm token create --print-join-command` to get a new join command.
 
 ## Reset the cluster
 ```bash
-sudo kubeadm reset
-sudo systemctl restart kubelet
-sudo rm -rf ~/.kube
+chmod +x reset-cluster.sh
+./reset-cluster.sh
 ```
