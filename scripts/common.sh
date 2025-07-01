@@ -48,10 +48,10 @@ sudo apt-get install -y \
 
 # Install CRI-O
 curl -fsSL https://download.opensuse.org/repositories/isv:/cri-o:/stable:/$CRIO_VERSION/deb/Release.key |
-    gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
+    sudo gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
 
 echo "deb [signed-by=/etc/apt/keyrings/cri-o-apt-keyring.gpg] https://download.opensuse.org/repositories/isv:/cri-o:/stable:/$CRIO_VERSION/deb/ /" |
-    tee /etc/apt/sources.list.d/cri-o.list
+    sudo tee /etc/apt/sources.list.d/cri-o.list
 
 sudo apt-get update -y
 
@@ -89,7 +89,3 @@ sudo cat > /etc/default/kubelet << EOF
 KUBELET_EXTRA_ARGS=--node-ip=$local_ip
 EOF
 sudo chmod 644 /etc/default/kubelet
-
-# Enable CRI plugin in Containerd
-sudo sed -i '/disabled_plugins = \["cri"\]/d' "/etc/containerd/config.toml"
-sudo systemctl restart containerd
