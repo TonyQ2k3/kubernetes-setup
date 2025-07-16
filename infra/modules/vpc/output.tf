@@ -4,11 +4,11 @@ output "vpc_id" {
 }
 
 output "public_sg_id" {
-    description = "The ID of the public security group"
-    value       = aws_security_group.k8s-public-sg.id
+  description = "The ID of the public security group"
+  value       = aws_security_group.k8s-public-sg.id
 }
 
 output "subnet_ids" {
   description = "List of public subnet IDs"
-  value       = [ for subnet in aws_subnet.k8s-subnets: subnet.id ]
+  value       = [for subnet in aws_subnet.k8s-subnets : subnet.id]
 }

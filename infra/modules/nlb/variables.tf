@@ -1,7 +1,7 @@
 variable "nlb_name" {
   description = "The name of the ELB"
   type        = string
-  default = "k8s-nlb"
+  default     = "k8s-nlb"
 }
 
 variable "nlb_security_groups" {

@@ -6,5 +6,5 @@ output "instance_ids" {
 
 output "instance_public_ips" {
   description = "Public IP addresses of the Kubernetes nodes"
-  value = aws_instance.nodes[*].public_ip
+  value       = aws_instance.nodes[*].public_ip
 }
