@@ -21,7 +21,7 @@ variable "subnet_list" {
     {
       name       = "k8s-subnet-1"
       cidr_block = "10.0.1.0/24"
-      az = "us-east-1a"
+      az         = "us-east-1a"
     }
   ]
 }
