@@ -10,7 +10,7 @@ CRIO_VERSION=v1.33
 sudo swapoff -a
 (crontab -l 2>/dev/null; echo "@reboot /sbin/swapoff -a") | crontab - || true
 
-# Load the modules at bootup
+# Enable kernel modules required by Kubernetes
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
 overlay
 br_netfilter
@@ -29,7 +29,6 @@ EOF
 # Apply sysctl params without reboot
 sudo sysctl --system
 
-
 # Install common packages
 sudo apt-get update
 sudo apt-get install -y \
@@ -44,7 +43,6 @@ sudo apt-get install -y \
     iptables \
     ipset \
     jq
-
 
 # Install CRI-O
 curl -fsSL https://download.opensuse.org/repositories/isv:/cri-o:/stable:/$CRIO_VERSION/deb/Release.key |
