@@ -38,3 +38,8 @@ RBAC
 ServiceAccount is used to provide an identity for processes running inside pods when working with the K8s API. A ServiceAccount can allow or prevent a pod from reading ConfigMap, Secret, or creating resources.
 
 In cloud environments, SA can also be mapped to IAM entities, allowing pods to access cloud resources like S3, EC2, RDS etc.
+
+Taint and Toleration
+====
+### What is T&T
+Taint a node to repel all pods, then add a 

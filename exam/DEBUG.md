@@ -61,3 +61,11 @@ Checking permissions of service accounts
 ```bash
 kubectl auth can-i --as=<service-account> list pods
 ```
+
+### Taint and Toleration
+
+
+### Image errors:
++   Docker pull failed to resolve reference -> Wrong image tag or Network connectivity.
+
+    If it's also a timeout error -> It's network connectivity.
