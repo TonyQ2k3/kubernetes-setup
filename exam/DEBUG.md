@@ -48,7 +48,7 @@ When encountering issues with the kubelet, it's worth looking for relating confi
 ```bash
 find / | grep kubeadm
 ```
-Some files you should focus on are `kubeadm.conf` and `kubeadm-flags.env`
+Some files you should focus on are `kubelet.service`, `kubeadm.conf` and `kubeadm-flags.env`
 
 ### Restarting changes
 ```bash

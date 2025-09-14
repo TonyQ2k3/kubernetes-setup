@@ -55,5 +55,5 @@ Before running `terraform apply`, make sure you modify [role_arn](infra\modules\
 
 ## Connecting kubectl to the cluster
 ```bash
-aws eks update-kubeconfig --region region-code --name my-cluster
+aws eks update-kubeconfig --region us-east-1 --name k8s-cluster
 ```

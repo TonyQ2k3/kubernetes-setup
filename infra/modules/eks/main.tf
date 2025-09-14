@@ -56,10 +56,3 @@ resource "aws_eks_addon" "eks-pod-identity-agent" {
   addon_version = "v1.3.7-eksbuild.2"
   depends_on    = [aws_eks_cluster.k8s-cluster]
 }
-
-resource "aws_eks_addon" "cloudwatch-observability" {
-  cluster_name  = aws_eks_cluster.k8s-cluster.name
-  addon_name    = "amazon-cloudwatch-observability"
-  addon_version = "v4.3.1-eksbuild.1"
-  depends_on    = [aws_eks_cluster.k8s-cluster]
-}

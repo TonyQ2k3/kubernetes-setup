@@ -1,0 +1,14 @@
+global:
+  namespace: "vault"
+
+server:
+  image:
+    repository: "hashicorp/vault"
+    tag: "1.20.1"
+    pullPolicy: IfNotPresent
+  dev:
+    enabled: true
+
+injector:
+  enabled: true
+  port: 8080
